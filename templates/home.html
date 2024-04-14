@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+<html >
+
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <link rel="stylesheet" href='/static/css/style.css' />
+ 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>Document KYC API </title>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta content="Document KYC API" name="description">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+
+</head>
+
+<style>
+  .imageContainer > img:hover {
+      transform: scale(2);
+  }
+
+  #state {
+    display: none;
+  }
+
+</style>
+
+<body>
+
+  <div class="section">
+
+  <div class="container w-container">
+    <div class="container">
+      <div class="">
+          <div class="col">
+              <center><h2>Document KYC API (Upload document here) </h2></center>
+          </div>
+      </div>
+      <div class="">
+          <div class="col">
+              <select class="form-control" id="document_type" name="document_type" onchange="Show_field(this.value);">
+                <option value="dea">DEA Certificate</option>
+                <option value="dl">DL</option>
+                <option value="professional_license">Professional_License</option>
+                <option value="article">article</option>
+                <option value="fl">Facility License</option>
+                <option value="collaborative_agreement">collaborative_agreement</option>
+                
+
+                <option value="irs">IRS</option>
+                <option value="degree">Degree</option>
+                <option value="accreditation">Accreditation</option>
+                <option value="nv_state_businees_license">NV_State_Businees_License</option>
+                <option value="sdat">SDAT</option>
+                <option value="bank_letter">Bank_Letter</option>
+                <option value="clia">CLIA</option>
+                
+                <option value="bls">BLS</option>
+                <option value="board_certificates">Board_Certificates</option>
+                <option value="cds">CDS</option>
+                <option value="cpr">CPR</option>
+                <option value="pli">PLI</option>
+                <option value="check">check</option>
+                <option value="ama">ama</option>
+              </select>
+              <br>
+
+              <select class="form-control" id="state" name="state">
+                <option value="alabama">Alabama</option>
+                <option value="alaska">Alaska</option>
+                <option value="arizona">Arizona</option>
+                <option value="arkansas">Arkansas</option>
+                <option value="california">California</option>
+                <option value="colorado">Colorado</option>
+                <option value="connecticut">Connecticut</option>
+                <option value="delaware">Delaware</option>
+                <option value="dc">D.C</option>
+                <option value="florida">Florida</option>
+                <option value="georgia">Georgia</option>
+                <option value="hawaii">Hawaii</option>
+                <option value="idaho">Idaho</option>
+                <option value="illinois">Illinois</option>
+                <option value="indiana">Indiana</option>
+                <option value="iowa">Iowa</option>
+                <option value="kansas">Kansas</option>
+                <option value="kentucky">Kentucky</option>
+                <option value="louisiana">Louisiana</option>
+                <option value="maine">Maine</option>
+                <option value="maryland">Maryland</option>
+                <option value="massachusetts">Massachusetts</option>
+                <option value="michigan">Michigan</option>
+                <option value="minnesota">Minnesota</option>
+                <option value="mississippi">Mississippi</option>
+                <option value="missouri">Missouri</option>
+                <option value="montana">Montana</option>
+                <option value="nebraska">Nebraska</option>
+                <option value="nevada">Nevada</option>
+                <option value="new_hampshire">New Hampshire</option>
+                <option value="new_jersey">New Jersey</option>
+                <option value="new_mexico">New Mexico</option>
+                <option value="new_york">New York</option>
+                <option value="north_carolina">North Carolina</option>
+                <option value="north_dakota">North Dakota</option>
+                <option value="ohio">Ohio</option>
+                <option value="oklahoma">Oklahoma</option>
+                <option value="oregon">Oregon</option>
+                <option value="pennsylvania">Pennsylvania</option>
+                <option value="rhode_island">Rhode Island</option>
+                <option value="south_carolina">South Carolina</option>
+                <option value="south_dakota">South Dakota</option>
+                <option value="tennessee">Tennessee</option>
+                <option value="texas">Texas</option>
+                <option value="utah">Utah</option>
+                <option value="vermont">Vermont</option>
+                <option value="virginia">Virginia</option>
+                <option value="washington">Washington</option>
+                <option value="west_virginia">West Virginia</option>
+                <option value="wisconsin">Wisconsin</option>
+                <option value="wyoming">Wyoming</option>
+              </select>
+
+              <br>
+              <input class="form-control" accept="image/*,application/pdf" type="file" name="input_file" id="input_file">
+          </div>
+      </div>
+      <br>
+      <center><button type="button" id="btn_upload" style="color: white; background-color: #5ec045;" class="btn btn-lg btn-block">Predict</button></center>
+      <br>
+      <table class="table table-responsive">
+          <thead>
+            <tr>
+              <th style="text-align:center" scope="col">Original</th>
+              <th style="text-align:center" scope="col">Predicted Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th style="text-align:center">
+                  <div class="spinner-border text-primary" role="status">
+                      
+                    </div>
+                  <div class="imageContainer" id="original_image">
+                      </div>
+              </th>
+              <td style="text-align:center">
+                  <div class="spinner-border text-primary" role="status">
+                      
+                    </div>
+                  <div class="imageContainer" id="result_image">
+                      </div>
+              </td>
+            </tr>
+          </tbody>
+      </table>
+      <div class="">
+        <div class="col">
+            <p><strong>Json output:&nbsp;</strong><br>&nbsp;</p> 
+            <button type="button" id="btn_copy" style="color: black; background-color:#ced4da;" class="btn">Copy JSON</button> 
+
+            <pre id="json_data" style="background-color: rgb(44, 44, 44); color:white;"></pre>
+        </div>
+      </div>
+
+  </div>
+  </div>
+  </div>
+
+  <div class="wrapper">
+    <div class="modal_wrapper">
+      <div class="shadow close_btn"></div>
+      
+      <div class="modal">
+        <div class="modal_item s_modal">
+          <div class="close close_btn">
+            <ion-icon name="close"></ion-icon>
+          </div>
+          <div class="modal_body">
+            <div class="s_icon">
+            <ion-icon name="checkmark"></ion-icon>
+          </div>
+          <div class="s_text">
+            <h2>SUCCESS</h2>
+            <p>We are delighted to inform you that your document is validate successfully.</p>
+          </div>
+          </div>
+          <div class="s_button">
+            <button class="success_btn">Continue</button>
+          </div>
+        </div>
+        <div class="modal_item e_modal">
+          <div class="close close_btn">
+            <ion-icon name="close"></ion-icon>
+          </div>
+          <div class="modal_body">
+            <div class="s_icon">
+            <ion-icon name="help"></ion-icon>
+          </div>
+          <div class="s_text">
+            <h2>ERROR</h2>
+            <p>Unfortunately! we have found an issue with your document, Please try again with proper document.</p>
+          </div>
+          </div>
+          <div class="s_button">
+            <button class="error_btn">Continue</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+    <script>
+      var wrapper = document.querySelector(".wrapper");
+      var modal_wrapper = document.querySelector(".modal_wrapper");
+      var s_modal = document.querySelector(".s_modal");
+      var e_modal = document.querySelector(".e_modal");
+
+      $(document).ready(function(){
+          $(".spinner-border").hide()
+          $("#btn_upload").click(function(){
+              console.log("Click")
+              formdata = new FormData();
+              if($("#input_file").prop('files').length > 0)
+              {
+                  $(".spinner-border").show()
+                  $("#original_image").empty()
+                  $("#result_image").empty()
+                  $("#btn_upload").prop("disabled",true);
+                  file =$("#input_file").prop('files')[0];
+
+                  doc_type = $("#document_type").val(); 
+                  formdata.append("document_type", doc_type);
+
+                  state = $("#state").val(); 
+                  formdata.append("state", state);
+
+                  formdata.append("input_file", file);
+
+                  jQuery.ajax({
+                      url: "/predict",
+                      type: "POST",
+                      data: formdata,
+                      processData: false,
+                      contentType: false,
+                      success: function (result) {
+                        console.log(result.verificationStatus);
+                        if(result.verificationStatus){
+                          wrapper.style.visibility = 'visible';
+                         
+                          // 
+                          modal_wrapper.classList.add("active");
+                          s_modal.classList.add("active");
+                          e_modal.classList.remove("active");
+                        
+                          //$("#json_data").html("<pre class='NO-CACHE' width = '350px' src = 'ori-image/"+result+"?a=" + Math.random()+"' >")
+                          }
+                        else{
+                            wrapper.style.visibility = 'visible';
+
+                            modal_wrapper.classList.add("active");
+                            s_modal.classList.remove("active");
+                            e_modal.classList.add("active");
+                          }
+                          $("#btn_upload").prop("disabled",false);
+                          $(".spinner-border").hide()
+                          $("#original_image").empty()
+                          $("#result_image").empty()
+                          $("#json_data").empty()
+                          $("#original_image").html("<img class='NO-CACHE' width = '350px' src = 'ori-image/"+result.id+"?a=" + Math.random()+"' >")
+                          $("#result_image").html("<img class='NO-CACHE' width = '350px' src = 'predicted-image/"+result.id+"?a=" + Math.random()+"' >")
+                          $('#json_data').append(
+                              $('<pre>').text(
+                                  JSON.stringify(result, null, '  ')
+                              )
+                          )
+
+                          
+                      }
+                  });
+              }
+              else{
+                  alert("Please Select Valid Image")
+              } 
+          });
+          $("#btn_copy").click(function(){
+            console.log("Copied")
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val($("#json_data").text()).select();
+            document.execCommand("copy");
+            $temp.remove();
+          });
+      });
+      
+   </script>
+
+  <script>
+
+    function Show_field(val) {
+          var state = document.getElementById('state');
+          console.log(val);
+
+          if(val == 'dl' || val == 'article' || val == 'fl' || val == 'collaborative_agreement' || val == 'professional_license') {
+            state.style.display = 'Block';
+          }
+          else{
+            state.style.display = 'None';
+          }
+    }
+
+  </script>
+
+  <script>
+    // var buttons = document.querySelectorAll(".modal_btns button");
+    var close_btns = document.querySelectorAll(".close_btn");
+    var s_btns = document.querySelectorAll(".s_button");
+    
+    // var modal_wrapper = document.querySelector(".modal_wrapper");
+    var s_modal = document.querySelector(".s_modal");
+    var e_modal = document.querySelector(".e_modal");
+    
+
+
+    close_btns.forEach(function (close) {
+      close.addEventListener("click", function () {
+        modal_wrapper.classList.remove("active");
+        s_modal.classList.remove("active");
+        e_modal.classList.remove("active");
+        wrapper.style.visibility = 'hidden';
+
+      });
+    });
+    s_btns.forEach(function (close) {
+      close.addEventListener("click", function () {
+        modal_wrapper.classList.remove("active");
+        s_modal.classList.remove("active");
+        e_modal.classList.remove("active");
+        wrapper.style.visibility = 'hidden';
+
+      });
+    });
+
+
+    
+  </script>
+
+</html>

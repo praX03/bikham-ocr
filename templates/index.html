@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document training</title>
+    
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.8.0/viewer.min.css"> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        :root {
+            --c-action-primary: #2e44ff;
+            --c-action-primary-accent: #e9e5ff;
+            --c-action-secondary: #e5e5e5;
+            --c-text-primary: #0d0f21; 
+            --c-text-secondary: #6a6b76;
+            --c-background-primary: #d0d1de;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: var(--c-text-primary);
+            background-color: var(--c-background-primary);	
+            line-height: 1.5;
+        }
+
+        h1 {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+
+        h2 {
+            margin-top: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 5px 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button {
+            margin-top: 10px;
+            display: block;
+        }
+
+        .upload-form {
+            margin-top: 20px;
+        }
+
+        .create-folder-form {
+            margin-top: 20px;
+        }
+
+        .flash-message {
+            margin-top: 10px;
+            color: #d9534f;
+        }
+
+        /* Custom CSS for the drag-and-drop area */
+        .drop-zone {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .drop-zone.drag-over {
+            background-color: #f0f0f0;
+        }
+
+        /* Center the text within the drop-zone */
+        .drop-zone p {
+            margin: 0;
+            font-size: 16px;
+            color: #777;
+        }
+
+        /* Style the file input (hidden) */
+        #drag-and-drop-upload {
+            display: none;
+        }
+
+        input, button, select, textarea {
+            font: inherit;
+        }           
+
+        .modal {
+            width: 90%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 10vh;
+            margin-bottom: 10vh;
+            background-color: #FFF;
+            border-radius: .5rem;
+            box-shadow: 0 5px 15px rgba(#000, .2); 
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            padding: 1.5rem 1.5rem 1rem;
+        }
+
+        .logo-circle {
+            width: 3.5rem;
+            height: 3.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: var(--c-action-primary-accent);
+            svg {
+                max-width: 1.5rem;
+            }
+        }
+
+        .btn-close {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: .25rem;
+            border: none;
+            background-color: transparent;
+            &:hover, &:focus {
+                background-color: var(--c-action-primary-accent);
+            }
+        }
+
+        .modal-body {
+            padding: 1rem 1.5rem;
+            text-align: center;
+        }
+
+        .modal-title {
+            font-weight: 700;
+        }
+
+        .modal-description {
+            color: var(--c-text-secondary);
+        }
+
+        .upload-area {
+            margin-top: 1.25rem;
+            border: none;
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23ccc' stroke-width='3' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            background-color: transparent;
+            padding: 3rem;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            &:hover, &:focus {
+                    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%232e44ff' stroke-width='3' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            }
+        } 
+
+        .upload-area-icon {
+            display: block;
+            width: 2.25rem;
+            height: 2.25rem;
+            svg {
+                max-height: 100%;
+                max-width: 100%;
+            }
+        }
+
+        .upload-area-title {
+            margin-top: 1rem;
+            display: block;
+            font-weight: 700;
+                color: var(--c-text-primary);
+        }
+
+        .upload-area-description {
+                display: block;
+                color: var(--c-text-secondary);
+            strong {
+                color: var(--c-action-primary);
+                font-weight: 700;
+            }
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem 1.5rem;
+            display: flex;
+            /* justify-content: flex-end; */
+            justify-content: center;
+            [class*="btn-"] {
+                margin-left: .75rem;
+            }
+        }
+
+        .btn-secondary, .btn-primary {
+            padding: .5rem 1rem;
+            font-weight: 500;
+            border: 2px solid var(--c-action-secondary);
+            border-radius: .25rem;
+            background-color: transparent;
+        }
+
+        .btn-primary {
+            color: #FFF;
+            background-color: var(--c-action-primary);
+            border-color: var(--c-action-primary);
+        }
+
+        .form {
+            position: relative;
+            z-index: 1;
+            background: #FFFFFF;
+            /* max-width: 360px; */
+            margin: 0 auto 30px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+        }
+    </style>
+</head>
+<body>
+    
+    <h1 class="bg-dark text-white text-center p-2">Document training</h1>
+    
+    <div class="container mt-4">
+        {% if current_path != '' %}
+            <h2>Current Folder: {{ current_path }}</h2>
+            <a class="back-button" href="{{ url_for('view_folder', folder_path='') }}">&lt; Back to Root</a>
+        {% endif %}
+        
+
+        {% if current_path == '' %}
+            <div class="form">
+                <h3 class="mb-3">Add a New Document (same as the input parameter)</h3>
+                <form class="create-folder-form" action="{{ url_for('create_folder', folder_path=current_path) }}" method="POST" onsubmit="return validateFolderName()">
+                    <div class="form-group">
+                        <input type="text" name="new_folder_name" id="new-folder-name" class="form-control" placeholder="Enter document name (no spaces)" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add New</button>
+                </form>
+            </div>
+
+              <br>
+            <center><button type="button" id="btn_upload" style="color: white; background-color: #136e17;" class="btn btn-lg btn-block">Start training</button></center>
+              <br>
+
+            <!-- Center the spinner -->
+            <div class="text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <!-- Spinner content here -->
+                </div>
+            </div>            
+            
+            <div id="training-result"></div>
+
+        {% else %}
+            <div class="drop-modal">
+                <form class="upload-form" action="{{ url_for('upload_files', folder_path=current_path) }}" method="POST" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <h2 class="modal-title">Upload a file</h2>
+                        <p class="modal-description">Attach the file below</p>
+                        <div class="drop-zone1" id="drop-zone1">
+                            <div class="upload-area" style="width: auto;">
+                                <span class="upload-area-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="340.531" height="419.116" viewBox="0 0 340.531 419.116" style=" height: inherit; width: auto;">
+                                        <g id="files-new" clip-path="url(#clip-files-new)">
+                                            <path id="Union_2" data-name="Union 2" d="M-2904.708-8.885A39.292,39.292,0,0,1-2944-48.177V-388.708A39.292,39.292,0,0,1-2904.708-428h209.558a13.1,13.1,0,0,1,9.3,3.8l78.584,78.584a13.1,13.1,0,0,1,3.8,9.3V-48.177a39.292,39.292,0,0,1-39.292,39.292Zm-13.1-379.823V-48.177a13.1,13.1,0,0,0,13.1,13.1h261.947a13.1,13.1,0,0,0,13.1-13.1V-323.221h-52.39a26.2,26.2,0,0,1-26.194-26.195v-52.39h-196.46A13.1,13.1,0,0,0-2917.805-388.708Zm146.5,241.621a14.269,14.269,0,0,1-7.883-12.758v-19.113h-68.841c-7.869,0-7.87-47.619,0-47.619h68.842v-18.8a14.271,14.271,0,0,1,7.882-12.758,14.239,14.239,0,0,1,14.925,1.354l57.019,42.764c.242.185.328.485.555.671a13.9,13.9,0,0,1,2.751,3.292,14.57,14.57,0,0,1,.984,1.454,14.114,14.114,0,0,1,1.411,5.987,14.006,14.006,0,0,1-1.411,5.973,14.653,14.653,0,0,1-.984,1.468,13.9,13.9,0,0,1-2.751,3.293c-.228.2-.313.485-.555.671l-57.019,42.764a14.26,14.26,0,0,1-8.558,2.847A14.326,14.326,0,0,1-2771.3-147.087Z" transform="translate(2944 428)" fill="var(--c-action-primary)"/>
+                                        </g>
+                                    </svg>
+                                </span>
+                                <span class="upload-area-title">Drag file(s) here to upload.</span>
+                                <span class="upload-area-description">
+                                    Alternatively, you can select a file by <br/><strong>clicking here</strong>
+                                    <input type="file" class="form-control-file" name="file" id="drag-and-drop-upload1" style="display: block; position: relative; z-index: -1;" multiple>
+                                    <div id="selected-files"></div>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" value="Upload File(s)" class="btn btn-primary" id="upload-file-button">
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+        
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-message">
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {% endwith %}
+
+
+        {% if subfolders %}
+            <h3>Subfolders:</h3>
+            <!-- <ul class="list-group">
+                {% for folder in subfolders %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <a href="{{ url_for('view_folder', folder_path=current_path + '/' + folder) }}">{{ folder }}</a>
+                    </li>
+                {% endfor %}
+            </ul> -->
+
+            <ul class="list-group">
+                {% for folder in subfolders %}
+                {% if loop.index % 2 == 1 %}
+                <div class="row">
+                {% endif %}
+                <div class="col-6">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="{{ url_for('view_folder', folder_path=current_path + '/' + folder) }}">{{ folder }}</a>
+                    </li>
+                </div>
+                {% if loop.index % 2 == 0 or loop.last %}
+                </div>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if files %}
+            <h3>Files:</h3>
+            <ul>
+                {% for file in files %}
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-8">{{ file }}</div>
+                        <div class="col-2">
+                            <a href="{{ url_for('view_file', filepath=current_path + '/' + file) }}" target="_blank" id="view-button" class="btn btn-primary">View</a>
+                        </div>
+                        <div class="col-2">
+                            <a href="{{ url_for('delete_file', filepath=current_path + '/' + file) }}" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+    </div>
+
+    <script>
+        //const viewer = new Viewer(document.querySelectorAll('.view-button'), {
+        //     inline: false, 
+        //     viewed() {
+        //         viewer.zoomTo(1); 
+        //     }
+        // });
+
+        function validateFolderName() {
+            const folderNameInput = document.getElementById('new-folder-name');
+            const folderName = folderNameInput.value.trim();
+
+            if (folderName.includes(' ')) {
+                alert('Folder name should not contain spaces.');
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+
+    <script>
+        const selectedFilesElement = document.getElementById("selected-files");
+
+        const dropZone1 = document.getElementById('drop-zone1');
+        const dragAndDropInput1 = document.getElementById('drag-and-drop-upload1');
+        
+        dropZone1.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone1.classList.add('drag-over');
+        });
+        
+        dropZone1.addEventListener('dragleave', () => {
+            dropZone1.classList.remove('drag-over');
+        });
+        
+        dropZone1.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone1.classList.remove('drag-over');
+            const files = e.dataTransfer.files;
+            dragAndDropInput1.files = files;
+            console.log("selectedFiles")
+            const selectedFiles = Array.from(dragAndDropInput1.files).map(file => file.name);
+            console.log(selectedFiles)
+            selectedFilesElement.innerHTML = selectedFiles.join("<br>");
+
+        });
+        
+        dropZone1.addEventListener('click', () => {
+            dragAndDropInput1.click();
+        });
+        
+        dragAndDropInput1.addEventListener('change', () => {
+            const files = dragAndDropInput1.files;
+        });
+    </script>
+
+    <script>
+        const fileInput = document.getElementById("drag-and-drop-upload1");
+        
+        // const selectedFilesElement = document.getElementById("selected-files");
+
+        fileInput.addEventListener("change", function() {
+            const selectedFiles = Array.from(fileInput.files).map(file => file.name);
+            selectedFilesElement.innerHTML = selectedFiles.join("<br>");
+        });
+    </script>
+    <script>
+
+    $(document).ready(function(){
+        $(".spinner-border").hide()
+        $("#btn_upload").click(function(){
+            console.log("Click")
+            formdata = new FormData();
+            $(".spinner-border").show()
+            $('#training-result').html();
+            
+            jQuery.ajax({
+                url: "/start_training",
+                type: "POST",
+                data: formdata,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                console.log(result);
+                if(result.success){
+                    console.log(result);
+                    $('#training-result').html('<div class="alert alert-success" role="alert">' + result.message + '</div>');                                    
+                    }
+                else{
+                    $('#training-result').html('<div class="alert alert-danger" role="alert">' + result.message + '</div>');
+                    // $('#training-result').html('<p>Training failed.</p><p>Error:</p><pre>' + result.message + '</pre>');
+                                        
+                }
+                    $(".spinner-border").hide()
+                    }
+                });
+        });
+    });
+
+        
+    </script>
+
+    <!-- Bootstrap JS (jQuery and Popper.js) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.8.0/viewer.min.js"></script> -->
+</body>
+</html>
